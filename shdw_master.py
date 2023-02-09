@@ -1,5 +1,6 @@
 import ctypes
 import msvcrt
+import os
 import platform
 import subprocess
 import sys
@@ -28,6 +29,8 @@ if platform.system() != "Windows":
 
 
 if not ctypes.windll.shell32.IsUserAnAdmin():
+    # Get the PID of the unelevated prompt to taskkill later incase the user pauses the unelevated prompt
+    pid = os.getpid()
     print(
         f"{Fore.RED}User Error; {Fore.WHITE}Sh{Fore.BLUE}DW{Fore.WHITE} was not Executed with {Fore.RED}Elevated Privileges.\n"
     )
@@ -41,7 +44,8 @@ if not ctypes.windll.shell32.IsUserAnAdmin():
     ctypes.windll.shell32.ShellExecuteW(
         None, "runas", sys.executable, " ".join(sys.argv), None, 1
     )
-    sys.exit(0)
+    # Taskkill the unelevated prompt to prevent user error
+    subprocess.run(["taskkill", "/pid", str(pid), "/f"], capture_output=True, text=True)
 
 
 def check_internet_status():
