@@ -3,6 +3,7 @@ import msvcrt
 import platform
 import subprocess
 import sys
+import time
 from time import sleep
 
 import colorama
@@ -11,6 +12,7 @@ from colorama import Fore
 
 colorama.init(autoreset=False)
 
+start_time = time.perf_counter()
 if platform.system() != "Windows":
     ctypes.windll.kernel32.SetConsoleTitleW(
         f"ERROR: Your OS ({platform.system()}) is Not Supported."
@@ -27,7 +29,7 @@ if platform.system() != "Windows":
 
 if not ctypes.windll.shell32.IsUserAnAdmin():
     print(
-        f"{Fore.RED}User Error; {Fore.WHITE}Sh{Fore.BLUE}DW{Fore.WHITE} was not executed with escelated privilleges.\n"
+        f"{Fore.RED}User Error; {Fore.WHITE}Sh{Fore.BLUE}DW{Fore.WHITE} was not Executed with {Fore.RED}Elevated Privileges.\n"
     )
     for i in range(3, 0, -1):
         ctypes.windll.kernel32.SetConsoleTitleW(f"Elevating In {i}")
@@ -95,5 +97,8 @@ if win_ver.major >= 11:
         pass
 else:
     if win_ver.major < 11:
-        print("Finished all checks!")
+        check_perf = time.perf_counter() - start_time
+        print(
+            f"{Fore.LIGHTGREEN_EX}Finished all checks in {(time.perf_counter() - start_time) * 1000:.2f}ms{Fore.WHITE}."
+        )
         msvcrt.getch()
