@@ -45,41 +45,39 @@ if not ctypes.windll.shell32.IsUserAnAdmin():
         None, "runas", sys.executable, " ".join(sys.argv), None, 1
     )
     # Taskkill the unelevated prompt to prevent user error
-    subprocess.run(["taskkill", "/pid", str(pid), "/f"])
+    subprocess.run(["taskkill", "/pid", pid, "/f"], check=True)
 
 
 def check_internet_status():
     try:
-        response = requests.get("https://duckduckgo.com")
-        response.raise_for_status()
-        return True
-    except requests.exceptions.RequestException:
+        with requests.Session() as session:
+            response = session.get("https://duckduckgo.com")
+            response.raise_for_status()
+            return True
+    except:
         return False
 
 
-if check_internet_status():
-    pass
-else:
-    tries = 0
-    while not check_internet_status():
-        subprocess.run("cls", shell=True)
-        print(
-            f"{Fore.RED}ERROR; Failed to resolve test host ({'https://duckduckgo.com'}).{Fore.WHITE}\n"
-        )
-        print(
-            f"{Fore.GREEN}INFO; {Fore.WHITE}It is likely you have no Active Internet Connection established.\n"
-        )
-        print(
-            f"{Fore.LIGHTBLUE_EX}DEBUGGING; {Fore.WHITE}Attempting to reconnect to an Internet Connection. Interval: {Fore.LIGHTGREEN_EX}1.5s{Fore.WHITE}\n"
-        )
-        print(
-            f"{Fore.LIGHTBLUE_EX}DEBUGGING; {Fore.WHITE}Attempts to Connect: {Fore.BLUE}{tries}{Fore.WHITE}\n"
-        )
-        ctypes.windll.kernel32.SetConsoleTitleW(
-            f"ERROR: Failed Connection Check! Attempts to Connect: {tries}"
-        )
-        tries += 1
-        sleep(1.5)
+tries = 0
+while not check_internet_status():
+    subprocess.run("cls", shell=True)
+    print(
+        f"{Fore.RED}ERROR; Failed to resolve test host ({'https://duckduckgo.com'}).{Fore.WHITE}\n"
+    )
+    print(
+        f"{Fore.GREEN}INFO; {Fore.WHITE}It is likely you have no Active Internet Connection established.\n"
+    )
+    print(
+        f"{Fore.LIGHTBLUE_EX}DEBUGGING; {Fore.WHITE}Attempting to reconnect to an Internet Connection. Interval: {Fore.LIGHTGREEN_EX}1.5s{Fore.WHITE}\n"
+    )
+    print(
+        f"{Fore.LIGHTBLUE_EX}DEBUGGING; {Fore.WHITE}Attempts to Connect: {Fore.BLUE}{tries}{Fore.WHITE}\n"
+    )
+    ctypes.windll.kernel32.SetConsoleTitleW(
+        f"ERROR: Failed Connection Check! Attempts to Connect: {tries}"
+    )
+    tries += 1
+    sleep(1.5)
 
 win_ver = sys.getwindowsversion()
 
