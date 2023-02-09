@@ -45,7 +45,7 @@ if not ctypes.windll.shell32.IsUserAnAdmin():
         None, "runas", sys.executable, " ".join(sys.argv), None, 1
     )
     # Taskkill the unelevated prompt to prevent user error
-    subprocess.run(["taskkill", "/pid", str(pid), "/f"], capture_output=True, text=True)
+    subprocess.run(["taskkill", "/pid", str(pid), "/f"])
 
 
 def check_internet_status():
