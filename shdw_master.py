@@ -31,7 +31,7 @@ if not ctypes.windll.shell32.IsUserAnAdmin():
         f"{Fore.WHITE}Sh{Fore.BLUE}DW{Fore.WHITE} was not Executed with {Fore.RED}Elevated Privileges.\n"
     )
     for i in range(3, 0, -1):
-        ctypes.windll.kernel32.SetConsoleTitleW(f"Elevating In {i}")
+        ctypes.windll.kernel32.SetConsoleTitleW(f"ShDW Admin Check: Elevating In {i}")
         print(
             f"{Fore.LIGHTBLUE_EX}DEBUGGING; {Fore.WHITE}Attempting to auto-elevate. Elevating in {Fore.LIGHTGREEN_EX}{i}{Fore.WHITE}...",
             end="\r",
