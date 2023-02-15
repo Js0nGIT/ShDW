@@ -81,7 +81,6 @@ while not check_internet_status() and TRIES < MAX_TRIES:
 
 win_ver = sys.getwindowsversion()
 
-# >= operator strictly for future proofing
 if win_ver.major >= 11:
     subprocess.run("cls", shell=True)
     print(
@@ -91,12 +90,16 @@ if win_ver.major >= 11:
         f"Please be aware that Sh{Fore.BLUE}DW {Fore.WHITE}may not function properly on your version of Windows and any damage caused is at {Fore.RED}your own risk{Fore.WHITE}\n"
     )
     print(f"Press '{Fore.GREEN}y{Fore.WHITE}' to continue, or any other key to exit.")
+
     user_input = msvcrt.getch().decode("utf-8").lower()
+
     if user_input == "y":
         subprocess.run("cls", shell=True)
         pass
     else:
         sys.exit(0)
+
+
 
 
 print(f"{Fore.LIGHTGREEN_EX}Finished all checks{Fore.WHITE}.")
