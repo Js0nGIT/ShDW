@@ -81,6 +81,7 @@ while not check_internet_status() and TRIES < MAX_TRIES:
 
 win_ver = sys.getwindowsversion()
 
+# >= operator strictly for future proofing
 if win_ver.major >= 11:
     subprocess.run("cls", shell=True)
     print(
