@@ -8,6 +8,7 @@ from time import sleep
 
 import colorama
 import requests
+import requests.exceptions
 from colorama import Fore
 
 colorama.init(autoreset=False)
@@ -15,13 +16,12 @@ colorama.init(autoreset=False)
 
 if platform.system() != "Windows":
     ctypes.windll.kernel32.SetConsoleTitleW(
-        f"ERROR; Your OS ({platform.system()}) is Not Supported."
+        f"ERROR; Your OS ({platform.system()}) is Not Supported. (Press any Key to Exit)"
     )
     subprocess.run("cls", shell=True)
     print(
-        f"{Fore.RED}ERROR; {Fore.WHITE}Your Current OS ({Fore.RED}{platform.system()}{Fore.WHITE}) Is Not Supported. \nSh{Fore.BLUE}DW{Fore.WHITE} is a {Fore.LIGHTBLUE_EX}Windows-Based{Fore.WHITE} Script.\n"
+        f"{Fore.RED}ERROR; {Fore.WHITE}Your Current OS ({Fore.RED}{platform.system()}{Fore.WHITE}) Is Not Supported.\n"
     )
-    print(f"Press any Key to {Fore.RED}Exit{Fore.WHITE}.")
     # Pause via subprocess, msvcrt is windows-specific and using getch() will not work.
     subprocess.run("pause >nul 2>&1", shell=True)
     sys.exit(1)
@@ -49,10 +49,10 @@ if not ctypes.windll.shell32.IsUserAnAdmin():
 
 def check_internet_status():
     try:
-        response = requests.head("https://duckduckgo.com")
+        response = requests.head("https://www.google.com/")
         if response.status_code == 200:
             return True
-    except:
+    except requests.exceptions.RequestException:
         return False
 
 
@@ -61,31 +61,31 @@ tries = 0
 
 
 while not check_internet_status() and tries < max_tries:
+    ctypes.windll.kernel32.SetConsoleTitleW(
+        f"ERROR; Failed Connection Check! Attempts to Connect: {tries}"
+    )
     subprocess.run("cls", shell=True)
+    print(f"{Fore.RED}ERROR; Failed to send HEAD Request.{Fore.WHITE}\n")
     print(
-        f"{Fore.RED}ERROR; Failed to resolve test host ({'https://duckduckgo.com'}).{Fore.WHITE}\n"
+        f"{Fore.GREEN}INFO; {Fore.WHITE}It Seems that you have {Fore.RED}No Internet Access {Fore.WHITE}right now.\n"
     )
     print(
-        f"{Fore.GREEN}INFO; {Fore.WHITE}It is likely you have no Active Internet Connection established.\n"
-    )
-    print(
-        f"{Fore.LIGHTBLUE_EX}DEBUGGING; {Fore.WHITE}Attempting to reconnect to an Internet Connection. Interval: {Fore.LIGHTGREEN_EX}1.5s{Fore.WHITE}\n"
+        f"{Fore.LIGHTBLUE_EX}DEBUGGING; {Fore.WHITE}Attempting to Reconnect to an Internet Connection. Retry Interval: {Fore.LIGHTGREEN_EX}1.5s{Fore.WHITE}\n"
     )
     print(
         f"{Fore.LIGHTBLUE_EX}DEBUGGING; {Fore.WHITE}Attempts to Connect: {Fore.BLUE}{tries}{Fore.WHITE}\n"
-    )
-    ctypes.windll.kernel32.SetConsoleTitleW(
-        f"ERROR; Failed Connection Check! Attempts to Connect: {tries}"
     )
     tries += 1
     sleep(1.5)
 
     if tries == max_tries:
         subprocess.run("cls", shell=True)
-        print(
-            f"{Fore.RED}ERROR; Max tries for Connection Check Exceeded ({tries} tries). {Fore.WHITE}\n"
+        ctypes.windll.kernel32.SetConsoleTitleW(
+            f"ERROR; Max retries for Connection Check Reached ({tries} tries). (Press any Key to Exit)"
         )
-        print(f"Press any Key to {Fore.RED}Exit{Fore.WHITE}.")
+        print(
+            f"{Fore.RED}ERROR; Max retries for Connection Check Reached ({tries} tries). {Fore.WHITE}\n"
+        )
         msvcrt.getch()
         sys.exit(1)
 
