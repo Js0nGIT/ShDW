@@ -4,7 +4,6 @@ import os
 import platform
 import subprocess
 import sys
-import time
 from time import sleep
 
 import colorama
@@ -13,16 +12,16 @@ from colorama import Fore
 
 colorama.init(autoreset=False)
 
-start_time = time.perf_counter()
+
 if platform.system() != "Windows":
     ctypes.windll.kernel32.SetConsoleTitleW(
-        f"ERROR: Your OS ({platform.system()}) is Not Supported."
+        f"ERROR; Your OS ({platform.system()}) is Not Supported."
     )
     subprocess.run("cls", shell=True)
     print(
-        f"{Fore.RED}ERROR: {Fore.WHITE}Your Current OS ({Fore.RED}{platform.system()}{Fore.WHITE}) Is Not Supported. Sh{Fore.BLUE}DW {Fore.WHITE}only Supports being run under Windows.\n"
+        f"{Fore.RED}ERROR; {Fore.WHITE}Your Current OS ({Fore.RED}{platform.system()}{Fore.WHITE}) Is Not Supported. \nSh{Fore.BLUE}DW{Fore.WHITE} is a {Fore.LIGHTBLUE_EX}Windows-Based{Fore.WHITE} Script.\n"
     )
-    print("Please Press any Key to Exit.")
+    print(f"Press any Key to {Fore.RED}Exit{Fore.WHITE}.")
     # Pause via subprocess, msvcrt is windows-specific and using getch() will not work.
     subprocess.run("pause >nul 2>&1", shell=True)
     sys.exit(1)
@@ -50,16 +49,18 @@ if not ctypes.windll.shell32.IsUserAnAdmin():
 
 def check_internet_status():
     try:
-        with requests.Session() as session:
-            response = session.get("https://duckduckgo.com")
-            response.raise_for_status()
+        response = requests.head("https://duckduckgo.com")
+        if response.status_code == 200:
             return True
     except:
         return False
 
 
+max_tries = 10
 tries = 0
-while not check_internet_status():
+
+
+while not check_internet_status() and tries < max_tries:
     subprocess.run("cls", shell=True)
     print(
         f"{Fore.RED}ERROR; Failed to resolve test host ({'https://duckduckgo.com'}).{Fore.WHITE}\n"
@@ -74,10 +75,19 @@ while not check_internet_status():
         f"{Fore.LIGHTBLUE_EX}DEBUGGING; {Fore.WHITE}Attempts to Connect: {Fore.BLUE}{tries}{Fore.WHITE}\n"
     )
     ctypes.windll.kernel32.SetConsoleTitleW(
-        f"ERROR: Failed Connection Check! Attempts to Connect: {tries}"
+        f"ERROR; Failed Connection Check! Attempts to Connect: {tries}"
     )
     tries += 1
     sleep(1.5)
+
+    if tries == max_tries:
+        subprocess.run("cls", shell=True)
+        print(
+            f"{Fore.RED}ERROR; Max tries for Connection Check Exceeded ({tries} tries). {Fore.WHITE}\n"
+        )
+        print(f"Press any Key to {Fore.RED}Exit{Fore.WHITE}.")
+        msvcrt.getch()
+        sys.exit(1)
 
 win_ver = sys.getwindowsversion()
 
@@ -92,15 +102,19 @@ if win_ver.major >= 11:
     )
     print(f"Press '{Fore.GREEN}y{Fore.WHITE}' to continue, or any other key to exit.")
     user_input = msvcrt.getch().decode("utf-8").lower()
-    if user_input != "y":
-        print(f"Exiting Sh{Fore.BLUE}DW.")
-        sys.exit(0)
-    elif user_input == "y":
+    if user_input == "y":
         pass
-else:
-    if win_ver.major < 11:
-        check_perf = time.perf_counter() - start_time
+    else:
         print(
-            f"{Fore.LIGHTGREEN_EX}Finished all checks in {(time.perf_counter() - start_time) * 1000:.2f}ms{Fore.WHITE}."
+            f"Are you sure you want to exit? ({Fore.LIGHTGREEN_EX}Y{Fore.WHITE}/{Fore.RED}N{Fore.WHITE})"
         )
-        msvcrt.getch()
+        user_input = msvcrt.getch().decode("utf-8").lower()
+        if user_input == "y":
+            sys.exit(0)
+        else:
+            subprocess.run("cls", shell=True)
+            # Go back to the original warning
+            pass
+else:
+    print(f"{Fore.LIGHTGREEN_EX}Finished all checks{Fore.WHITE}.")
+    msvcrt.getch()
