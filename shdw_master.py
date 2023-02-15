@@ -58,19 +58,13 @@ def check_internet_status():
 
 while not check_internet_status() and TRIES < MAX_TRIES:
     ctypes.windll.kernel32.SetConsoleTitleW(
-        f"ERROR; Failed Connection Check! Attempts to Connect: {TRIES}"
+        f"ERROR; Failed Connection Check! Reconnection Attempts: {TRIES}"
     )
     subprocess.run("cls", shell=True)
     print(f"{Fore.RED}ERROR; Failed to send HEAD Request.{Fore.WHITE}\n")
+    print(f"{Fore.GREEN}INFO; {Fore.WHITE}It looks like you're not connected to the internet right now.\n")
     print(
-        f"{Fore.GREEN}INFO; {Fore.WHITE}It Seems that you have {Fore.RED}No Internet Access {Fore.WHITE}right now.\n"
-    )
-    print(
-        f"{Fore.LIGHTBLUE_EX}DEBUGGING; {Fore.WHITE}Attempting to Reconnect to an Internet Connection. Retry Interval: {Fore.LIGHTGREEN_EX}{RETRY_INTERVAL}s{Fore.WHITE}\n"
-    )
-    print(
-        f"{Fore.LIGHTBLUE_EX}DEBUGGING; {Fore.WHITE}Attempts to Connect: {Fore.BLUE}{TRIES}{Fore.WHITE}\n"
-    )
+        f"{Fore.LIGHTBLUE_EX}DEBUGGING; {Fore.WHITE}Attempting to reconnect to an internet connection.\n    Retry Interval: {Fore.LIGHTGREEN_EX}{RETRY_INTERVAL}s{Fore.WHITE}\n    Live Reconnection Attempts: {Fore.BLUE}{TRIES}{Fore.WHITE}\n")
     TRIES += 1
     sleep(RETRY_INTERVAL)
 
