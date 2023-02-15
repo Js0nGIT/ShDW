@@ -99,18 +99,11 @@ if win_ver.major >= 11:
     print(f"Press '{Fore.GREEN}y{Fore.WHITE}' to continue, or any other key to exit.")
     user_input = msvcrt.getch().decode("utf-8").lower()
     if user_input == "y":
+        subprocess.run("cls", shell=True)
         pass
     else:
-        print(
-            f"Are you sure you want to exit? ({Fore.LIGHTGREEN_EX}Y{Fore.WHITE}/{Fore.RED}N{Fore.WHITE})"
-        )
-        user_input = msvcrt.getch().decode("utf-8").lower()
-        if user_input == "y":
-            sys.exit(0)
-        else:
-            subprocess.run("cls", shell=True)
-            # Go back to the original warning
-            pass
-else:
-    print(f"{Fore.LIGHTGREEN_EX}Finished all checks{Fore.WHITE}.")
-    msvcrt.getch()
+        sys.exit(0)
+
+
+print(f"{Fore.LIGHTGREEN_EX}Finished all checks{Fore.WHITE}.")
+msvcrt.getch()
