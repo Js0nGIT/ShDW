@@ -7,12 +7,16 @@ from time import sleep
 
 import colorama
 import requests
-import requests.exceptions
 from colorama import Fore
 
 colorama.init(autoreset=False)
 
-
+# Define constants
+MAX_TRIES = 10  # Maximum number of tries for reconnecting to the internet
+TRIES = 0  # Current integer of attempts to reconnect to the internet so far
+RETRY_INTERVAL = (
+    2  # Time interval (seconds) between retrying internet connection attempts
+)
 if platform.system() != "Windows":
     ctypes.windll.kernel32.SetConsoleTitleW(
         f"ERROR; Your OS ({platform.system()}) is Not Supported. (Press any Key to Exit)"
@@ -52,13 +56,9 @@ def check_internet_status():
         return False
 
 
-max_tries = 10
-tries = 0
-
-
-while not check_internet_status() and tries < max_tries:
+while not check_internet_status() and TRIES < MAX_TRIES:
     ctypes.windll.kernel32.SetConsoleTitleW(
-        f"ERROR; Failed Connection Check! Attempts to Connect: {tries}"
+        f"ERROR; Failed Connection Check! Attempts to Connect: {TRIES}"
     )
     subprocess.run("cls", shell=True)
     print(f"{Fore.RED}ERROR; Failed to send HEAD Request.{Fore.WHITE}\n")
@@ -66,21 +66,21 @@ while not check_internet_status() and tries < max_tries:
         f"{Fore.GREEN}INFO; {Fore.WHITE}It Seems that you have {Fore.RED}No Internet Access {Fore.WHITE}right now.\n"
     )
     print(
-        f"{Fore.LIGHTBLUE_EX}DEBUGGING; {Fore.WHITE}Attempting to Reconnect to an Internet Connection. Retry Interval: {Fore.LIGHTGREEN_EX}1.5s{Fore.WHITE}\n"
+        f"{Fore.LIGHTBLUE_EX}DEBUGGING; {Fore.WHITE}Attempting to Reconnect to an Internet Connection. Retry Interval: {Fore.LIGHTGREEN_EX}{RETRY_INTERVAL}s{Fore.WHITE}\n"
     )
     print(
-        f"{Fore.LIGHTBLUE_EX}DEBUGGING; {Fore.WHITE}Attempts to Connect: {Fore.BLUE}{tries}{Fore.WHITE}\n"
+        f"{Fore.LIGHTBLUE_EX}DEBUGGING; {Fore.WHITE}Attempts to Connect: {Fore.BLUE}{TRIES}{Fore.WHITE}\n"
     )
-    tries += 1
-    sleep(1.5)
+    TRIES += 1
+    sleep(RETRY_INTERVAL)
 
-    if tries == max_tries:
+    if TRIES == MAX_TRIES:
         subprocess.run("cls", shell=True)
         ctypes.windll.kernel32.SetConsoleTitleW(
-            f"ERROR; Max retries for Connection Check Reached ({tries} tries). (Press any Key to Exit)"
+            f"ERROR; Max retries for Connection Check Reached ({TRIES} tries). (Press any Key to Exit)"
         )
         print(
-            f"{Fore.RED}ERROR; Max retries for Connection Check Reached ({tries} tries). {Fore.WHITE}\n"
+            f"{Fore.RED}ERROR; Max retries for Connection Check Reached ({TRIES} tries). {Fore.WHITE}\n"
         )
         msvcrt.getch()
         sys.exit(1)
