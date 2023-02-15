@@ -64,7 +64,7 @@ while not check_internet_status() and TRIES < MAX_TRIES:
     print(f"{Fore.RED}ERROR; Failed to send HEAD Request.{Fore.WHITE}\n")
     print(f"{Fore.GREEN}INFO; {Fore.WHITE}It looks like you're not connected to the internet right now.\n")
     print(
-        f"{Fore.LIGHTBLUE_EX}DEBUGGING; {Fore.WHITE}Attempting to reconnect to an internet connection.\n    {Fore.RED}Retry Interval: {Fore.WHITE}{RETRY_INTERVAL}s\n    {Fore.RED}Live Reconnection Attempts: {Fore.WHITE}{TRIES}\n")
+        f"{Fore.LIGHTWHITE_EX}DEBUGGING; {Fore.WHITE}Attempting to reconnect to an internet connection.\n    {Fore.RED}Retry Interval: {Fore.WHITE}{RETRY_INTERVAL}s\n    {Fore.RED}Live Reconnection Attempts: {Fore.WHITE}{TRIES}\n")
     TRIES += 1
     sleep(RETRY_INTERVAL)
 
