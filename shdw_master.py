@@ -33,7 +33,7 @@ if not ctypes.windll.shell32.IsUserAnAdmin():
     for i in range(3, 0, -1):
         ctypes.windll.kernel32.SetConsoleTitleW(f"ShDW Admin Check: Elevating In {i}")
         print(
-            f"{Fore.WHITE}Attempting to Auto-Elevate. Elevating in {Fore.LIGHTGREEN_EX}{i}{Fore.WHITE}...",
+            f"{Fore.RED}Attempting to Auto-Elevate. {Fore.WHITE}Elevating in {Fore.LIGHTGREEN_EX}{i}{Fore.WHITE}...",
             end="\r",
         )
         sleep(1)
