@@ -28,7 +28,7 @@ if platform.system() != "Windows":
 
 if not ctypes.windll.shell32.IsUserAnAdmin():
     print(
-        f"{Fore.RED}User Error; {Fore.WHITE}Sh{Fore.BLUE}DW{Fore.WHITE} was not Executed with {Fore.RED}Elevated Privileges.\n"
+        f"{Fore.WHITE}Sh{Fore.BLUE}DW{Fore.WHITE} was not Executed with {Fore.RED}Elevated Privileges.\n"
     )
     for i in range(3, 0, -1):
         ctypes.windll.kernel32.SetConsoleTitleW(f"Elevating In {i}")
