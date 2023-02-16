@@ -36,7 +36,7 @@ if platform.system() != "Windows":
 
 if not ctypes.windll.shell32.IsUserAnAdmin():
     print(
-        f"{Fore.WHITE}Sh{Fore.BLUE}DW{Fore.WHITE} Requires Elevated Privilleges in Order to Function Properly.\n"
+        f"{Fore.WHITE}Sh{Fore.BLUE}DW{Fore.LIGHTWHITE_EX} Requires Elevated Privilleges in Order to Function Properly.\n"
     )
     for i in range(3, 0, -1):
         ctypes.windll.kernel32.SetConsoleTitleW(f"ShDW Admin Check: Elevating In {i}")
