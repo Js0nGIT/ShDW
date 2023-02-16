@@ -12,13 +12,13 @@ from colorama import Fore
 colorama.init(autoreset=False)
 
 # Constant(s)
-MAX_TRIES = 10  # Maximum number of tries for reconnecting to the internet
+MAX_TRIES = 5  # Maximum number of tries for reconnecting to the internet
 
 # Define base tries value
 TRIES = 0  # Current integer of attempts to reconnect to the internet so far
 
 # Define base retry_interval value
-RETRY_INTERVAL = 2  # Base time interval (in seconds) between retries. This value will increase by 0.75 seconds for each unsuccessful connection attempt (iteration).
+RETRY_INTERVAL = 2.5  # Base time interval (in seconds) between retries. This value will increase by 0.75 seconds for each unsuccessful connection attempt (iteration).
 
 
 if platform.system() != "Windows":
@@ -67,10 +67,10 @@ while not check_internet_status() and TRIES < MAX_TRIES:
     subprocess.run("cls", shell=True)
     print(f"{Fore.RED}ERROR; Failed to send HEAD Request. {Fore.WHITE}\n")
     print(
-        f"{Fore.GREEN}INFO; {Fore.WHITE}It looks like you're not connected to the internet right now.\n"
+        f"{Fore.GREEN}INFO; {Fore.LIGHTWHITE_EX}It looks like you're not Connected to the Internet right now.\n"
     )
     print(
-        f"{Fore.LIGHTWHITE_EX}DEBUGGING; {Fore.WHITE}Attempting to reconnect to an internet connection.\n    {Fore.RED}Live RETRY_INTERVAL: {Fore.WHITE}{RETRY_INTERVAL}s\n    {Fore.RED}Live Reconnection Attempts: {Fore.WHITE}{TRIES}\n"
+        f"{Fore.LIGHTWHITE_EX}DEBUGGING; {Fore.WHITE}Attempting to reconnect to an Internet Connection.\n    {Fore.RED}Live RETRY_INTERVAL: {Fore.WHITE}{RETRY_INTERVAL}s\n    {Fore.RED}Constant MAX_TRIES: {Fore.WHITE}{MAX_TRIES}\n    {Fore.RED}Live Reconnection Attempts: {Fore.LIGHTWHITE_EX}{TRIES}{Fore.WHITE}"
     )
     TRIES += 1
     sleep(RETRY_INTERVAL)
@@ -83,8 +83,9 @@ while not check_internet_status() and TRIES < MAX_TRIES:
             f"ERROR; Max retries for Connection Check Reached ({TRIES} tries). (Press any Key to Exit)"
         )
         print(
-            f"{Fore.RED}ERROR; Max retries for Connection Check Reached ({TRIES} tries). {Fore.WHITE}\n"
+            f"{Fore.RED}ERROR; {Fore.LIGHTWHITE_EX}Max retries for Connection Check Reached ({Fore.RED}{TRIES} tries{Fore.WHITE})\n"
         )
+        print(f"{Fore.LIGHTWHITE_EX}Please press any Key to {Fore.RED}Exit{Fore.WHITE}.")
         msvcrt.getch()
         sys.exit(1)
 
