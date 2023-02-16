@@ -70,7 +70,7 @@ while not check_internet_status() and TRIES < MAX_TRIES:
         f"{Fore.GREEN}INFO; {Fore.LIGHTWHITE_EX}It looks like you're not Connected to the Internet right now.\n"
     )
     print(
-        f"{Fore.LIGHTWHITE_EX}DEBUGGING; {Fore.WHITE}Attempting to reconnect to an Internet Connection.\n    {Fore.RED}Live RETRY_INTERVAL: {Fore.WHITE}{RETRY_INTERVAL}s\n    {Fore.RED}Constant MAX_TRIES: {Fore.WHITE}{MAX_TRIES}\n    {Fore.RED}Live Reconnection Attempts: {Fore.LIGHTWHITE_EX}{TRIES}{Fore.WHITE}"
+        f"{Fore.LIGHTWHITE_EX}DEBUGGING; {Fore.WHITE}Attempting to reconnect to an Internet Connection.\n    {Fore.RED}Live RETRY_INTERVAL: {Fore.LIGHTWHITE_EX}{RETRY_INTERVAL}s\n    {Fore.RED}Constant MAX_TRIES: {Fore.LIGHTWHITE_EX}{MAX_TRIES}\n    {Fore.RED}Live Reconnection Attempts: {Fore.LIGHTWHITE_EX}{TRIES}{Fore.WHITE}"
     )
     TRIES += 1
     sleep(RETRY_INTERVAL)
