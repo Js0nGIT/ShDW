@@ -18,7 +18,7 @@ MAX_TRIES = 10  # Maximum number of tries for reconnecting to the internet
 TRIES = 0  # Current integer of attempts to reconnect to the internet so far
 
 # Define base retry_interval value
-RETRY_INTERVAL = 2  # Base time interval (in seconds) between retries. This value will increase by 0.5 seconds for each unsuccessful connection attempt (iteration).
+RETRY_INTERVAL = 2  # Base time interval (in seconds) between retries. This value will increase by 0.75 seconds for each unsuccessful connection attempt (iteration).
 
 
 if platform.system() != "Windows":
@@ -70,12 +70,12 @@ while not check_internet_status() and TRIES < MAX_TRIES:
         f"{Fore.GREEN}INFO; {Fore.WHITE}It looks like you're not connected to the internet right now.\n"
     )
     print(
-        f"{Fore.LIGHTWHITE_EX}DEBUGGING; {Fore.WHITE}Attempting to reconnect to an internet connection.\n    {Fore.RED}Retry Interval: {Fore.WHITE}{RETRY_INTERVAL}s\n    {Fore.RED}Live Reconnection Attempts: {Fore.WHITE}{TRIES}\n"
+        f"{Fore.LIGHTWHITE_EX}DEBUGGING; {Fore.WHITE}Attempting to reconnect to an internet connection.\n    {Fore.RED}Live RETRY_INTERVAL: {Fore.WHITE}{RETRY_INTERVAL}s\n    {Fore.RED}Live Reconnection Attempts: {Fore.WHITE}{TRIES}\n"
     )
     TRIES += 1
     sleep(RETRY_INTERVAL)
-    # Increment the time between each reconnection attempt by 0.5 seconds every failed reconnection attempt.
-    RETRY_INTERVAL += 0.5
+    # Increment the time between each reconnection attempt by 3/4 of a second (.75) every failed reconnection attempt.
+    RETRY_INTERVAL += 0.75
 
     if TRIES == MAX_TRIES:
         subprocess.run("cls", shell=True)
