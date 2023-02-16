@@ -91,7 +91,7 @@ while not check_internet_status() and TRIES < MAX_TRIES:
 win_ver = sys.getwindowsversion()
 
 # >= operator strictly for future proofing
-if win_ver.major <= 11:
+if win_ver.major >= 11:
     subprocess.run("cls", shell=True)
     print(
         f"{Fore.YELLOW}WARNING: {Fore.WHITE}Your version of Windows ({win_ver.major}.{win_ver.minor}) is not officially supported by Sh{Fore.BLUE}DW{Fore.WHITE}.\n"
