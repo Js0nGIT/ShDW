@@ -16,6 +16,7 @@ colorama.init(autoreset=False)
 MAX_TRIES = 5  # Maximum number of tries for reconnecting to the internet
 
 # Variables
+script_version = "ShDW: Pre-ALPHA <v0.0.1>"
 u = os.getlogin()
 
 
@@ -26,7 +27,8 @@ TRIES = 0  # Current integer of attempts to reconnect to the internet so far
 RETRY_INTERVAL = 2.5  # Base time interval (in seconds) between retries. This value will increase by 0.75 seconds for each unsuccessful connection attempt (iteration).
 
 
-def shdw_ascii():
+def shdw_starter():
+    ctypes.windll.kernel32.SetConsoleTitleW(f"{script_version} [ Admin Check ]")
     print(f"""\n
   
     {Fore.BLUE}...,,::::,,....{Fore.WHITE}.,,.......,,,.....{Fore.BLUE}.....,;*????*;,......
@@ -47,7 +49,7 @@ if platform.system() != "Windows":
 
 
 if not ctypes.windll.shell32.IsUserAnAdmin():
-    shdw_ascii()
+    shdw_starter()
     print(
         f"\n{Fore.LIGHTWHITE_EX}Sh{Fore.BLUE}DW{Fore.LIGHTWHITE_EX} Requires Elevated Privilleges in Order to Function Properly.\n"
     )
@@ -75,15 +77,15 @@ def check_internet_status():
 
 while not check_internet_status() and TRIES < MAX_TRIES:
     ctypes.windll.kernel32.SetConsoleTitleW(
-        f"ERROR; Failed Connection Check! Reconnection Attempts: {TRIES}"
+        f"Failed Connection Check! Reconnection Attempts: {TRIES}"
     )
     subprocess.run("cls", shell=True)
-    print(f"{Fore.RED}ERROR; Failed to send HEAD Request. {Fore.WHITE}\n")
+    print(f"{Fore.RED}Failed to send HEAD Request. {Fore.WHITE}\n")
     print(
-        f"{Fore.GREEN}INFO; {Fore.LIGHTWHITE_EX}It looks like you're not Connected to the Internet right now.\n"
+        f"{Fore.LIGHTWHITE_EX}It looks like you're not Connected to the Internet right now.\n"
     )
     print(
-        f"{Fore.LIGHTWHITE_EX}DEBUGGING; {Fore.WHITE}Attempting to reconnect to an Internet Connection.\n    {Fore.RED}Live RETRY_INTERVAL: {Fore.LIGHTWHITE_EX}{RETRY_INTERVAL}s\n    {Fore.RED}Constant MAX_TRIES: {Fore.LIGHTWHITE_EX}{MAX_TRIES}\n    {Fore.RED}Live Reconnection Attempts: {Fore.LIGHTWHITE_EX}{TRIES}{Fore.WHITE}"
+        f"{Fore.WHITE}Attempting to reconnect to an Internet Connection.\n    {Fore.RED}Live RETRY_INTERVAL: {Fore.LIGHTWHITE_EX}{RETRY_INTERVAL}s\n    {Fore.RED}Constant MAX_TRIES: {Fore.LIGHTWHITE_EX}{MAX_TRIES}\n    {Fore.RED}Live Reconnection Attempts: {Fore.LIGHTWHITE_EX}{TRIES}{Fore.WHITE}"
     )
     TRIES += 1
     sleep(RETRY_INTERVAL)
@@ -93,42 +95,16 @@ while not check_internet_status() and TRIES < MAX_TRIES:
     if TRIES == MAX_TRIES:
         subprocess.run("cls", shell=True)
         ctypes.windll.kernel32.SetConsoleTitleW(
-            f"ERROR; Max retries for Connection Check Reached ({TRIES} tries). (Press any Key to Exit)"
+            f"Max retries for Connection Check Reached ({TRIES} tries). (Press any Key to Exit)"
         )
         print(
-            f"{Fore.RED}ERROR; {Fore.LIGHTWHITE_EX}Max retries for Connection Check Reached ({Fore.RED}{TRIES} tries{Fore.WHITE})\n"
+            f"{Fore.LIGHTWHITE_EX}Max retries for Connection Check Reached ({Fore.RED}{TRIES} tries{Fore.WHITE})\n"
         )
         print(
             f"{Fore.LIGHTWHITE_EX}Please press any Key to {Fore.RED}Exit{Fore.WHITE}."
         )
         msvcrt.getch()
         sys.exit(1)
-
-win_ver = sys.getwindowsversion()
-
-# >= operator strictly for future proofing
-if win_ver.major >= 11:
-    subprocess.run("cls", shell=True)
-    print(
-        f"{Fore.YELLOW}WARNING: {Fore.WHITE}Your version of Windows ({win_ver.major}.{win_ver.minor}) is not officially supported by Sh{Fore.BLUE}DW{Fore.WHITE}.\n"
-    )
-    print(
-        f"Please be aware that Sh{Fore.BLUE}DW {Fore.WHITE}may not function properly on your version of Windows and any damage caused is at {Fore.RED}your own risk{Fore.WHITE}\n"
-    )
-    print(f"Press '{Fore.GREEN}y{Fore.WHITE}' to continue, or any other key to exit.")
-
-    user_input = (
-        msvcrt.getwch()
-        .encode(sys.stdin.encoding or "utf-8")
-        .decode("utf-8", "ignore")
-        .lower()
-    )
-
-    if user_input == "y":
-        subprocess.run("cls", shell=True)
-        pass
-    else:
-        sys.exit(0)
 
 
 
