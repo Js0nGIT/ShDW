@@ -13,10 +13,10 @@ from colorama import Fore
 colorama.init(autoreset=False)
 
 # Constant(s)
-MAX_TRIES = 5  # Maximum number of tries for reconnecting to the internet
+MAX_TRIES = 10  # Maximum number of tries for reconnecting to the internet
 
 # Variables
-script_version = "ShDW: Pre-ALPHA <v0.0.1>"
+script_version = f"ShDW: Pre-ALPHA <v0.0.1>"
 u = os.getlogin()
 
 
@@ -24,7 +24,7 @@ u = os.getlogin()
 TRIES = 0  # Current integer of attempts to reconnect to the internet so far
 
 # Define base retry_interval value
-RETRY_INTERVAL = 2.5  # Base time interval (in seconds) between retries. This value will increase by 0.75 seconds for each unsuccessful connection attempt (iteration).
+RETRY_INTERVAL = 2  # Base time interval (in seconds) between retries. This value will increase by 0.75 seconds for each unsuccessful connection attempt (iteration).
 
 
 def shdw_starter():
@@ -55,7 +55,7 @@ if not ctypes.windll.shell32.IsUserAnAdmin():
     )
     for countdown in range(3, 0, -1):
         print(
-            f"{Fore.RED}Hold tight{Fore.WHITE}, Elevating in {Fore.LIGHTGREEN_EX}{countdown}{Fore.WHITE}...",
+            f"{Fore.LIGHTWHITE_EX}Hold tight, {u}. Elevating in {Fore.LIGHTGREEN_EX}{countdown}{Fore.WHITE}...",
             end="\r",
             flush=True,
         )
@@ -77,7 +77,7 @@ def check_internet_status():
 
 while not check_internet_status() and TRIES < MAX_TRIES:
     ctypes.windll.kernel32.SetConsoleTitleW(
-        f"Failed Connection Check! Reconnection Attempts: {TRIES}"
+        f"{script_version} [ Failed Connection Check! Reconnection Attempts: {TRIES} ]"
     )
     subprocess.run("cls", shell=True)
     print(f"{Fore.RED}Failed to send HEAD Request. {Fore.WHITE}\n")
@@ -107,7 +107,7 @@ while not check_internet_status() and TRIES < MAX_TRIES:
         sys.exit(1)
 
 
-
+print(f"{Fore.BLUE}Placeholder{Fore.LIGHTWHITE_EX}: {Fore.LIGHTGREEN_EX}{script_version}")
 msvcrt.getch()
 
 
