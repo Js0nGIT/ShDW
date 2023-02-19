@@ -70,6 +70,7 @@ def check_internet_status():
     try:
         response = requests.head("https://www.google.com/")
         if response.status_code == 200:
+            subprocess.run("cls", shell=True)
             return True
     except requests.exceptions.RequestException:
         return False
